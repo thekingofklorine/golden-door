@@ -9,10 +9,10 @@ import App from './App';
 const rootElement = document.getElementById('root')!; // Non-null assertion to avoid TypeScript error
 const root = createRoot(rootElement); // Create root using createRoot
 
-// Render the App inside BrowserRouter
+// Render the App inside BrowserRouter with a basename for routing
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/golden-door"> {/* Set the basename here */}
       <App />
     </BrowserRouter>
   </React.StrictMode>
