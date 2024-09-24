@@ -27,7 +27,7 @@ const App: React.FC = () => {
   };
 
   const handleNavigation = (path: string) => {
-    navigate(`/golden-door${path}`); // Prepend the base path
+    navigate(path);
     setDrawerOpen(false); // Close the drawer after navigating
   };
 
@@ -86,10 +86,10 @@ const App: React.FC = () => {
 
       {/* Define Routes for Navigation */}
       <Routes>
-        <Route path="/golden-door/" element={<Home />} /> {/* Ensure this is correct */}
-        <Route path="/golden-door/about" element={<About />} />
-        <Route path="/golden-door/services" element={<Services />} />
-        <Route path="/golden-door/contact" element={<Contact />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </div>
   );
