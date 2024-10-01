@@ -1,3 +1,14 @@
+Don't want to delete the basic stuff so I will just push it down
+
+npm install at the beginning
+npm start to see it on local host
+npm run build -> npm run deploy = see it on the git pages
+
+Files of interest: App.tsx then all of the pages folder
+
+Goal: redfin/zillow for high value doors
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
