@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/golden-door/static/css/main.f855e6bc.css",
-    "main.js": "/golden-door/static/js/main.79ce67f9.js",
+    "main.css": "/golden-door/static/css/main.74ec03df.css",
+    "main.js": "/golden-door/static/js/main.b1a9888f.js",
+    "static/media/street.jpg": "/golden-door/static/media/street.44283b9b3f5a8eccdc60.jpg",
     "static/media/doorlogo192.png": "/golden-door/static/media/doorlogo192.0928329290401651d54e.png",
     "index.html": "/golden-door/index.html",
-    "main.f855e6bc.css.map": "/golden-door/static/css/main.f855e6bc.css.map",
-    "main.79ce67f9.js.map": "/golden-door/static/js/main.79ce67f9.js.map"
+    "main.74ec03df.css.map": "/golden-door/static/css/main.74ec03df.css.map",
+    "main.b1a9888f.js.map": "/golden-door/static/js/main.b1a9888f.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.79ce67f9.js"
+    "static/css/main.74ec03df.css",
+    "static/js/main.b1a9888f.js"
   ]
 }
