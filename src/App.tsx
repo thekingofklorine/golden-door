@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Drawer, List, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,7 +15,7 @@ import Contact from './pages/Contact';
 
 const App: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const navigate = useNavigate(); // Use useNavigate hook
+  const navigate = useNavigate();
 
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
@@ -59,17 +59,19 @@ const App: React.FC = () => {
   return (
     <div className="App">
       {/* AppBar with Menu Icon and Title */}
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ backgroundColor: 'var(--paynes-gray)', zIndex: 1300 }}>
         <Toolbar>
           <IconButton
             edge="start"
-            color="inherit"
+            sx={{ color: 'var(--ash-gray)' }} // Set icon button color to Earth Yellow
+
+            // color="inherit"
             aria-label="menu"
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'var(--ash-gray)' }}>
             Golden Door
           </Typography>
         </Toolbar>
@@ -84,13 +86,15 @@ const App: React.FC = () => {
         {drawerContent}
       </Drawer>
 
-      {/* Define Routes for Navigation */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      {/* Define Routes */}
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </div>
     </div>
   );
 }

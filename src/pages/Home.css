@@ -1,0 +1,45 @@
+/* Fixed, full-page background image for the Home page */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url('../resources/street.jpg'); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps background fixed */
+    z-index: -2; /* Ensure background stays behind everything */
+}
+  
+/* Overlay that covers the entire viewport but sits beneath the AppBar */
+.overlay {
+    position: fixed; /* Changed to fixed */
+    top: 0;          /* Aligns to the top */
+    left: 0;         /* Aligns to the left */
+    width: 100%;     /* Full width */
+    height: 100vh;   /* Full height */
+    z-index: 1;      /* Below the AppBar */
+    transition: opacity 0.5s ease-in-out;
+    background-color: var(--battleship-gray-transparent); /* Semi-transparent */
+}
+
+/* Content container */
+.content-container {
+    padding: 20px;
+    position: relative; /* Added relative positioning to ensure content stays above overlay */
+    z-index: 2; /* Ensure content is above the overlay */
+}
+
+/* Scrollable content sections */
+.content-section {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc; /* Light border for separation */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f9f9f9; /* Background for sections */
+}
+
+h2 {
+    margin: 0;
+}

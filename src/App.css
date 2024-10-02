@@ -1,3 +1,14 @@
+:root {
+  --raisin-black: hsla(220, 27%, 13%, 1);
+  --paynes-gray: hsla(204, 30%, 32%, 1);
+  --earth-yellow: hsla(36, 54%, 63%, 1);
+  --paynes-gray-2: hsla(198, 24%, 42%, 1);
+  --battleship-gray: hsla(60, 4%, 54%, 1);
+  --battleship-gray-transparent: hsla(60, 4%, 54%, .8);
+  --ash-gray: hsla(84, 5%, 82%, 1);
+}
+
+
 .App {
   text-align: center;
 }
@@ -5,6 +16,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.content {
+  padding-top: 64px; /* Make space for fixed AppBar */
 }
 
 @media (prefers-reduced-motion: no-preference) {
