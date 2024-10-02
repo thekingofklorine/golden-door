@@ -82,6 +82,7 @@ const App: React.FC = () => {
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawer(false)}
+        sx={{ zIndex: 1400 }} // Set a higher z-index for the drawer
       >
         {drawerContent}
       </Drawer>
