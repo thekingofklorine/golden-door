@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
 // Define the style for the map container
 const mapContainerStyle = {
@@ -18,8 +18,7 @@ const Services: React.FC = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string, // Use .env API key
   });
 
-  const [mapCenter, setMapCenter] = useState(center);
-  const [markerPosition, setMarkerPosition] = useState(center); // State for marker position
+  const [mapCenter, setMapCenter] = useState(center); // State for map center
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const zipCode = e.target.value;
@@ -35,10 +34,6 @@ const Services: React.FC = () => {
               lat: location.lat,
               lng: location.lng,
             });
-            setMarkerPosition({
-              lat: location.lat,
-              lng: location.lng,
-            });
           } else {
             console.error('No results found for this zip code');
           }
@@ -51,9 +46,6 @@ const Services: React.FC = () => {
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
-
-  // Debugging: Log the marker position to see its current state
-  console.log('Marker position:', markerPosition);
 
   return (
     <div>
@@ -71,16 +63,7 @@ const Services: React.FC = () => {
         />
       </div>
       <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={mapCenter}>
-        {/* Using AdvancedMarkerElement */}
-        <Marker
-          position={markerPosition}
-          // options={{
-          //   icon: {
-          //     url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Custom marker icon URL (optional)
-          //     scaledSize: new window.google.maps.Size(30, 30), // Adjust size of the marker icon (optional)
-          //   },
-          // }}
-        />
+        {/* Marker functionality has been removed */}
       </GoogleMap>
     </div>
   );
