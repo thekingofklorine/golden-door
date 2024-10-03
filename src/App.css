@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Playfair+Display:wght@700&display=swap');
+
+/* Define global font usage */
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .midas-touch {
+  font-family: 'Playfair Display', serif;
+}
+
+.content-section {
+  font-family: 'Lato', sans-serif;
+}
+
 :root {
   --raisin-black: hsla(220, 27%, 13%, 1);
   --paynes-gray: hsla(204, 30%, 32%, 1);
@@ -7,7 +22,6 @@
   --battleship-gray-transparent: hsla(60, 4%, 54%, .8);
   --ash-gray: hsla(84, 5%, 82%, 1);
 }
-
 
 .App {
   text-align: center;
