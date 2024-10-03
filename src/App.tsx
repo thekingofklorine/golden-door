@@ -4,8 +4,8 @@ import { AppBar, Toolbar, IconButton, Typography, Drawer, List, Divider } from '
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/system';
 import { ListItemButton } from '@mui/material';
-
 import './App.css';
+import menuLogo from "../src/resources/doorlogo32.png"
 
 // Import the page components
 import Home from './pages/Home';
@@ -58,22 +58,25 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      {/* AppBar with Menu Icon and Title */}
+      {/* AppBar with Menu Icon, Logo, and Title */}
       <AppBar position="fixed" sx={{ backgroundColor: 'var(--paynes-gray)', zIndex: 1300 }}>
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: 'flex-start' }}>
           <IconButton
             edge="start"
-            sx={{ color: 'var(--ash-gray)' }} // Set icon button color to Earth Yellow
-
-            // color="inherit"
+            sx={{ color: 'var(--ash-gray)' }}
             aria-label="menu"
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'var(--ash-gray)' }}>
-            Golden Door
-          </Typography>
+
+          {/* Logo and Title Section */}
+          <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
+            <img src={menuLogo} alt="Golden Door Logo" style={{ width: 32, height: 32, marginRight: 8 }} />
+            <Typography variant="h6" component="div" sx={{ color: 'var(--ash-gray)' }}>
+              Golden Door
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 

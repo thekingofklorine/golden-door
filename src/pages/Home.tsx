@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import doorLogo from '../resources/doorlogo192.png'; // Adjust the path as necessary
+// import doorLogo from '../resources/doorlogo192.png';
 import './Home.css'; // Import the specific CSS for the Home page
 
 function Home() {
@@ -25,12 +25,12 @@ function Home() {
 
       {/* Content of the Home page */}
       <div className="content-container">
-        <h1>Welcome to the Home Page</h1>
-        <img 
+        <h1 className="midas-touch">Knock with the Midas touch</h1>
+      {/* <img 
           src={doorLogo} 
           alt="Golden Door Logo" 
           style={{ maxWidth: '100%', height: 'auto' }} 
-        />
+        /> */}
       </div>
 
       {/* Additional containers with filler text */}
