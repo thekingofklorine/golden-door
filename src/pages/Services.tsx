@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import data from '../resources/fake_data.json'; // Import the JSON data
 
 // Define the style for the map container
 const mapContainerStyle = {
@@ -9,9 +10,18 @@ const mapContainerStyle = {
 
 // Set default center coordinates for the map
 const center = {
-  lat: 37.7749, // Default to San Francisco
-  lng: -122.4194,
+  lat: 36.368729854037625, // Default to Centerton
+  lng: -94.28376217185604,
 };
+
+interface Location {
+  name: string;
+  latitude: number;
+  longitude: number;
+  income: number;
+  house_price: number;
+  move_in_date: string;
+}
 
 const Services: React.FC = () => {
   const { isLoaded, loadError } = useLoadScript({
@@ -19,6 +29,19 @@ const Services: React.FC = () => {
   });
 
   const [mapCenter, setMapCenter] = useState(center); // State for map center
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null); // State for the selected location
+
+  useEffect(() => {
+    console.log('Data loaded:', data); // Check the loaded data
+  }, []); // Log data on mount
+
+  const handleMarkerClick = (location: Location) => {
+    setSelectedLocation(location); // Set the selected location
+  };
+
+  const handleClose = () => {
+    setSelectedLocation(null); // Close the info box
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const zipCode = e.target.value;
@@ -63,8 +86,31 @@ const Services: React.FC = () => {
         />
       </div>
       <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={mapCenter}>
-        {/* Marker functionality has been removed */}
+        {data.map((location: Location, index: number) => (
+          <Marker 
+            key={index} 
+            position={{ lat: location.latitude, lng: location.longitude }} 
+            title={location.name}
+            onClick={() => handleMarkerClick(location)} // Set click handler
+          />
+        ))}
       </GoogleMap>
+
+      {/* Conditional rendering of selected location info */}
+      {selectedLocation && (
+        <div style={{ padding: '10px', background: 'white', position: 'absolute', top: '60px', left: '10px', zIndex: 1, borderRadius: '5px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+          <button 
+            onClick={handleClose} 
+            style={{ float: 'right', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'red' }}
+          >
+            X
+          </button>
+          <h2>{selectedLocation.name}</h2>
+          <p><strong>Income:</strong> ${selectedLocation.income.toLocaleString()}</p>
+          <p><strong>House Price:</strong> ${selectedLocation.house_price.toLocaleString()}</p>
+          <p><strong>Move-In Date:</strong> {selectedLocation.move_in_date}</p>
+        </div>
+      )}
     </div>
   );
 };
