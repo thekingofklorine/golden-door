@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import data from '../resources/fake_data.json'; // Import the JSON data
-
+import { FilterCriteria,filterHomesWithCriteria, filterHomes } from '../filter';
 // Define the style for the map container
 const mapContainerStyle = {
   width: '100%',
@@ -28,12 +28,24 @@ const Services: React.FC = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string, // Use .env API key
   });
 
+  // State for checkboxes
+  const [showIncome, setShowIncome] = useState(false);
+  const [showHousePrice, setShowHousePrice] = useState(false);
+  const [showMoveInDate, setShowMoveInDate] = useState(false);
+
   const [mapCenter, setMapCenter] = useState(center); // State for map center
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null); // State for the selected location
+  const [criteria, setCriteria] = useState<FilterCriteria>({}); // State for filter criteria
+  const [filteredData, setFilteredData] = useState<Location[]>(data); // State for filtered data
 
   useEffect(() => {
     console.log('Data loaded:', data); // Check the loaded data
   }, []); // Log data on mount
+
+  useEffect(() => {
+    const filtered = filterHomes(criteria);
+    setFilteredData(filtered);
+  }, [criteria]);
 
   const handleMarkerClick = (location: Location) => {
     setSelectedLocation(location); // Set the selected location
@@ -67,6 +79,11 @@ const Services: React.FC = () => {
     }
   };
 
+  const handleCriteriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCriteria(prev => ({ ...prev, [name]: value }));
+  };
+
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -85,6 +102,84 @@ const Services: React.FC = () => {
           }}
         />
       </div>
+
+                {/* Filter Checkboxes */}
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={showIncome}
+            onChange={() => setShowIncome(!showIncome)}
+          />
+          Filter by Income
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={showHousePrice}
+            onChange={() => setShowHousePrice(!showHousePrice)}
+          />
+          Filter by House Price
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={showMoveInDate}
+            onChange={() => setShowMoveInDate(!showMoveInDate)}
+          />
+          Filter by Move-in Date
+        </label>
+      </div>
+
+      {/* Filter Inputs */}
+      <div style={{ marginBottom: '20px' }}>
+        {showIncome && (
+          <>
+            <input
+              type="number"
+              name="minIncome"
+              placeholder="Min Income"
+              onChange={handleCriteriaChange}
+              style={{ padding: '10px', marginRight: '10px' }}
+            />
+            <input
+              type="number"
+              name="maxIncome"
+              placeholder="Max Income"
+              onChange={handleCriteriaChange}
+              style={{ padding: '10px', marginRight: '10px' }}
+            />
+          </>
+        )}
+        {showHousePrice && (
+          <>
+            <input
+              type="number"
+              name="minHousePrice"
+              placeholder="Min House Price"
+              onChange={handleCriteriaChange}
+              style={{ padding: '10px', marginRight: '10px' }}
+            />
+            <input
+              type="number"
+              name="maxHousePrice"
+              placeholder="Max House Price"
+              onChange={handleCriteriaChange}
+              style={{ padding: '10px', marginRight: '10px' }}
+            />
+          </>
+        )}
+        {showMoveInDate && (
+          <input
+            type="date"
+            name="moveInDate"
+            placeholder="Move-in Date"
+            onChange={handleCriteriaChange}
+            style={{ padding: '10px', marginRight: '10px' }}
+          />
+        )}
+      </div>
+
       <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={mapCenter}>
         {data.map((location: Location, index: number) => (
           <Marker 
