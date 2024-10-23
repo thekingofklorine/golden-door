@@ -40,13 +40,9 @@ const Services: React.FC = () => {
 
   useEffect(() => {
     console.log('Filter criteria changed:', criteria); // Log criteria changes
-    if (Object.keys(criteria).length === 0) {
-      setFilteredData(data); // If no criteria, show all data
-    } else {
-      const filtered = filterHomes(criteria);
-      console.log('Filtered data:', filtered); // Log filtered data
-      setFilteredData(filtered);
-    }
+    const filtered = filterHomes(criteria);
+    console.log('Filtered data:', filtered); // Log filtered data
+    setFilteredData(filtered);
   }, [criteria]);
 
   const handleMarkerClick = (location: Location) => {
@@ -86,42 +82,44 @@ const Services: React.FC = () => {
     setCriteria(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleApplyFilter = () => {
-    const filtered = filterHomes(criteria);
-    console.log('Applying filter:', criteria); // Log criteria when applying filter
-    console.log('Filtered data after applying filter:', filtered); // Log filtered data after applying filter
-    setFilteredData(filtered);
-  };
-
   const getMarkerColor = (location: Location): string => {
     let matchCount = 0;
-    if (criteria.minIncome && location.income >= criteria.minIncome) matchCount++;
-    if (criteria.maxIncome && location.income <= criteria.maxIncome) matchCount++;
-    if (criteria.minHousePrice && location.house_price >= criteria.minHousePrice) matchCount++;
-    if (criteria.maxHousePrice && location.house_price <= criteria.maxHousePrice) matchCount++;
+    if ((criteria.minIncome && location.income >= criteria.minIncome)&& (criteria.maxIncome && location.income <= criteria.maxIncome)) matchCount++;
+    if ((criteria.minHousePrice && location.house_price >= criteria.minHousePrice )&& (criteria.maxHousePrice && location.house_price <= criteria.maxHousePrice)) matchCount++;
     if (criteria.moveInDate && new Date(location.move_in_date) >= new Date(criteria.moveInDate) && new Date(location.move_in_date) <= new Date()) matchCount++;
-    
+
     switch (matchCount) {
       case 3:
-        return 'gold';
-      case 2:
         return 'green';
-      case 1:
+      case 2:
         return 'yellow';
-      default:
+      case 1:
         return 'red';
+      default:
+        return 'black';
     }
   };
 
   const checkMatch = (location: Location, criteria: FilterCriteria) => {
     return {
-      income: (!criteria.minIncome || location.income >= criteria.minIncome) &&
-              (!criteria.maxIncome || location.income <= criteria.maxIncome),
-      housePrice: (!criteria.minHousePrice || location.house_price >= criteria.minHousePrice) &&
-                  (!criteria.maxHousePrice || location.house_price <= criteria.maxHousePrice),
-      moveInDate: !criteria.moveInDate || 
-                  (new Date(location.move_in_date) >= new Date(criteria.moveInDate) && 
-                   new Date(location.move_in_date) <= new Date())
+      income: criteria.minIncome || criteria.maxIncome
+        ? (!criteria.minIncome || location.income >= criteria.minIncome) &&
+          (!criteria.maxIncome || location.income <= criteria.maxIncome)
+          ? '✅'
+          : '❌'
+        : '➖',
+      housePrice: criteria.minHousePrice || criteria.maxHousePrice
+        ? (!criteria.minHousePrice || location.house_price >= criteria.minHousePrice) &&
+          (!criteria.maxHousePrice || location.house_price <= criteria.maxHousePrice)
+          ? '✅'
+          : '❌'
+        : '➖',
+      moveInDate: criteria.moveInDate
+        ? (new Date(location.move_in_date) >= new Date(criteria.moveInDate) &&
+           new Date(location.move_in_date) <= new Date())
+          ? '✅'
+          : '❌'
+        : '➖',
     };
   };
 
@@ -131,7 +129,7 @@ const Services: React.FC = () => {
   return (
     <div>
       <h1>Our Service Locations</h1>
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <input
           type="text"
           placeholder="Enter ZIP code"
@@ -144,90 +142,87 @@ const Services: React.FC = () => {
         />
       </div>
 
-      {/* Filter Checkboxes */}
-      <div style={{ marginBottom: '20px' }}>
-        <label>
-          <input
-            type="checkbox"
-            checked={showIncome}
-            onChange={() => setShowIncome(!showIncome)}
-          />
-          Filter by Income
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={showHousePrice}
-            onChange={() => setShowHousePrice(!showHousePrice)}
-          />
-          Filter by House Price
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={showMoveInDate}
-            onChange={() => setShowMoveInDate(!showMoveInDate)}
-          />
-          Filter by Move-in Date
-        </label>
-      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', marginBottom: '20px' }}>
+        {/* Filter Checkboxes */}
+        <div style={{ textAlign: 'center' }}>
+          <label style={{ marginRight: '10px' }}>
+            <input
+              type="checkbox"
+              checked={showIncome}
+              onChange={() => setShowIncome(!showIncome)}
+            />
+            Filter by Income
+          </label>
+          <label style={{ marginRight: '10px' }}>
+            <input
+              type="checkbox"
+              checked={showHousePrice}
+              onChange={() => setShowHousePrice(!showHousePrice)}
+            />
+            Filter by House Price
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={showMoveInDate}
+              onChange={() => setShowMoveInDate(!showMoveInDate)}
+            />
+            Filter by Move-in Date
+          </label>
 
-      {/* Filter Inputs */}
-      <div style={{ marginBottom: '20px' }}>
-        {showIncome && (
-          <>
-            <input
-              type="number"
-              name="minIncome"
-              placeholder="Min Income"
-              onChange={handleCriteriaChange}
-              style={{ padding: '10px', marginRight: '10px' }}
-            />
-            <input
-              type="number"
-              name="maxIncome"
-              placeholder="Max Income"
-              onChange={handleCriteriaChange}
-              style={{ padding: '10px', marginRight: '10px' }}
-            />
-          </>
-        )}
-        {showHousePrice && (
-          <>
-            <input
-              type="number"
-              name="minHousePrice"
-              placeholder="Min House Price"
-              onChange={handleCriteriaChange}
-              style={{ padding: '10px', marginRight: '10px' }}
-            />
-            <input
-              type="number"
-              name="maxHousePrice"
-              placeholder="Max House Price"
-              onChange={handleCriteriaChange}
-              style={{ padding: '10px', marginRight: '10px' }}
-            />
-          </>
-        )}
-        {showMoveInDate && (
-          <input
-            type="date"
-            name="moveInDate"
-            placeholder="Move-in Date"
-            onChange={handleCriteriaChange}
-            style={{ padding: '10px', marginRight: '10px' }}
-          />
-        )}
+          {/* Filter Inputs */}
+          <div style={{ marginTop: '10px' }}>
+            {showIncome && (
+              <>
+                <input
+                  type="number"
+                  name="minIncome"
+                  placeholder="Min Income"
+                  onChange={handleCriteriaChange}
+                  style={{ padding: '10px', marginRight: '10px' }}
+                />
+                <input
+                  type="number"
+                  name="maxIncome"
+                  placeholder="Max Income"
+                  onChange={handleCriteriaChange}
+                  style={{ padding: '10px', marginRight: '10px' }}
+                />
+              </>
+            )}
+            {showHousePrice && (
+              <>
+                <input
+                  type="number"
+                  name="minHousePrice"
+                  placeholder="Min House Price"
+                  onChange={handleCriteriaChange}
+                  style={{ padding: '10px', marginRight: '10px' }}
+                />
+                <input
+                  type="number"
+                  name="maxHousePrice"
+                  placeholder="Max House Price"
+                  onChange={handleCriteriaChange}
+                  style={{ padding: '10px', marginRight: '10px' }}
+                />
+              </>
+            )}
+            {showMoveInDate && (
+              <input
+                type="date"
+                name="moveInDate"
+                placeholder="Move-in Date"
+                onChange={handleCriteriaChange}
+                style={{ padding: '10px', marginRight: '10px' }}
+              />
+            )}
+          </div>
+        </div>
       </div>
-
-      {/* Apply Filter Button */}
-      <button onClick={handleApplyFilter} style={{ padding: '10px', fontSize: '16px' }}>
-        Apply Filter
-      </button>
 
       {/* Toggle for Show Match Percentage */}
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <label>
           <input
             type="checkbox"
@@ -264,7 +259,7 @@ const Services: React.FC = () => {
                 icon={{
                   path: google.maps.SymbolPath.CIRCLE,
                   scale: 10,
-                  fillColor: 'blue',
+                  fillColor: getMarkerColor(location), // Use getMarkerColor here as well
                   fillOpacity: 1,
                   strokeWeight: 1,
                 }}
@@ -284,15 +279,15 @@ const Services: React.FC = () => {
           <h2>{selectedLocation.name}</h2>
           <p>
             <strong>Income:</strong> ${selectedLocation.income.toLocaleString()}
-            {checkMatch(selectedLocation, criteria).income ? ' ✅' : ' ❌'}
+            {checkMatch(selectedLocation, criteria).income}
           </p>
           <p>
             <strong>House Price:</strong> ${selectedLocation.house_price.toLocaleString()}
-            {checkMatch(selectedLocation, criteria).housePrice ? ' ✅' : ' ❌'}
+            {checkMatch(selectedLocation, criteria).housePrice}
           </p>
           <p>
             <strong>Move-In Date:</strong> {selectedLocation.move_in_date}
-            {checkMatch(selectedLocation, criteria).moveInDate ? ' ✅' : ' ❌'}
+            {checkMatch(selectedLocation, criteria).moveInDate}
           </p>
         </div>
       )}
